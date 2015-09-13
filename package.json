@@ -1,0 +1,16 @@
+{
+  "name": "urlmeta",
+  "version": "0.0.7",
+  "description": "An API to access meta of web",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "request": "^2.61.0",
+    "validator": "^4.0.5"
+  }
+}
