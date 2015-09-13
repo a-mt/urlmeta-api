@@ -184,4 +184,4 @@ http.createServer(function (req, res) {
 	init( req, res );
 
 }).listen(process.env.PORT || 9615);
-console.log('With forever.');
+console.log('screw forever.');
