@@ -173,6 +173,12 @@ function init (req, res) {
 	onlyHead = (query.onlyHead != undefined);
 	response = res;
 
+	if(query.url && query.url.indexOf('api.urlmeta.org') > 0)
+		respond({
+			error: true,
+			reason: "Somebody is getting cocky!"
+		});
+
 	startURL( query.url );
 }
 
@@ -184,4 +190,4 @@ http.createServer(function (req, res) {
 	init( req, res );
 
 }).listen(process.env.PORT || 9615);
-console.log('screw forever.');
+console.log('Alahamdulilah, Running...');
