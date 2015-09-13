@@ -4,7 +4,7 @@
   "description": "An API to access meta of web",
   "main": "app.js",
   "scripts": {
-    "start": "forever start app.js"
+    "start": "forever start app.js --minUptime 1000 --spinSleepTime 3000"
   },
   "author": "",
   "license": "ISC",
