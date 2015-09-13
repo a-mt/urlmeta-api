@@ -36,7 +36,7 @@ function getBody (url) {
 				respond({ error: true, reason: 'Could not parse HTML of website.', code: 6  });
 			}
 
-			if(metas.length > 0) {
+			if(metas && metas.length > 0) {
 
 				var meta = {};
 				metas.each(function() {
@@ -70,7 +70,6 @@ function getBody (url) {
 			}
 
 			if(!resBack.title) {
-				console.log('not set');
 				resBack.title = $('title').text();
 			}
 
@@ -111,7 +110,7 @@ function getHead (url){
 	  	}
 
 	  } else if (response.statusCode >= 400) {
-	  	respond({ error: true, reason: 'Could not find what you were looking for. HTTPCODE: ' + response.statusCode, code: 4 });
+	  	respond({ error: true, reason: 'Could not find what you were looking for.', httpCode: response.statusCode, code: 4 });
 	  }
 
 	}).on('error', function(err) {
@@ -123,6 +122,7 @@ function getHead (url){
 
 function respond (r) {
 	r = r || resBack;
+
 	var sendBack = {
 		result: {}
 	};
@@ -131,11 +131,26 @@ function respond (r) {
 		sendBack.result.status = 'ERROR';
 		sendBack.result.code   = r.code;
 		sendBack.result.reason =  r.reason || 'Unknown';
+
+		if( sendBack.result.reason != 'Unknown' )
+			sendBack.result.reason += ' Read docs here: https://urlmeta.org/dev-api.html';
+
+		if( r.httpCode )
+			sendBack.result.httpCode = r.httpCode;
+
 	} else {
 		sendBack.meta = {};
 		sendBack.result.status = 'OK';
+
+		// omit ;charset=utf-8
+		if(r.type && r.type.substr(0, 9) == 'text/html')
+			r.type = 'text/html';
+
 		sendBack.meta = r;
 	}
+
+	if(onlyHead)
+		sendBack.result.onlyHead = true;
 
 	response.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
 	response.end( JSON.stringify( sendBack ) );
@@ -169,4 +184,4 @@ http.createServer(function (req, res) {
 	init( req, res );
 
 }).listen(process.env.PORT || 9615);
-console.log('on 9615', process.env.PORT);
+console.log('on 9615');
