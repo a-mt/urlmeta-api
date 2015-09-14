@@ -1,3 +1,5 @@
+require('newrelic');
+
 var request = require('request'),
 cheerio = require('cheerio'),
 http = require('http'),
