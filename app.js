@@ -49,7 +49,7 @@ function getBody (url) {
 					else if( $( this ).attr('property') == 'og:description' || $( this ).attr('name') == 'twitter:description' || $( this ).attr('itemprop') == 'description' || $( this ).attr('name') == 'description' )
 						meta.description = $( this ).attr('content');
 					else if( $( this ).attr('property') == 'og:image' || $( this ).attr('name') == 'twitter:image' || $( this ).attr('itemprop') == 'image' )
-						meta.image = $( this ).attr('content');
+						meta.image = fullURL( url, $( this ).attr('content') );
 				});
 
 				resBack.title = meta.title;
