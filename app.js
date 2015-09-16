@@ -6,11 +6,15 @@ http = require('http'),
 uri = require('url'),
 valid = require('validator');
 
+// var mongodb = require('mongodb');
+
 var $ = null,
 response = null,
 resBack = {},
 timeOut = 5000,
 onlyHead = false;
+
+// var mongoURI = process.env.MONGOLAB_URI;
 
 function fullURL (url, path) {
 	return uri.resolve( url, path );
@@ -108,6 +112,7 @@ function getHead (url){
 	  	if( cont.substr(0, 9) == 'text/html' && !onlyHead ) {
 	  		getBody(url);
 	  	} else {
+	  		onlyHead = true;
 	  		respond();
 	  	}
 
@@ -192,4 +197,4 @@ http.createServer(function (req, res) {
 	init( req, res );
 
 }).listen(process.env.PORT || 9615);
-console.log('Alahamdulilah, Running...');
+console.log('Alhamdulilah, Running...');
