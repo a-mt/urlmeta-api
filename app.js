@@ -205,7 +205,7 @@ function init (req, res) {
 if (cluster.isMaster) {
 	var numCPUs = require('os').cpus().length;
 
-  console.log('firing up ', numCPUs, ' forks');
+  console.log('firing up', numCPUs, 'forks');
 
   for(var i = 0; i < numCPUs; i++) {
     cluster.fork();
@@ -217,4 +217,4 @@ if (cluster.isMaster) {
 	server.timeout = timeOut;
 }
 
-console.log('Running ', process.pid ,' on port', PORT);
+console.log('Running', process.pid ,'on port', PORT);
