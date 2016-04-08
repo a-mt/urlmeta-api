@@ -46,7 +46,7 @@ function getBody (url) {
 
 				var meta = {};
 				metas.each(function() {
-					if( $( this ).attr('name') == 'urlmeta'  &&  $( this ).attr('content') ) {
+					if( $( this ).attr('name') == 'urlmeta'  &&  $( this ).attr('content')  == 'no') {
 						respond({ error: true, reason: 'Website does not allow crawling.', code: 3 });
 					} else if( $( this ).attr('property') == 'og:title' ||
 										$( this ).attr('name') == 'twitter:title' ) {
