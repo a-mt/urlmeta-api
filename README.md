@@ -1,11 +1,17 @@
-# urlmeta-api
-This repo has the script which runs on urlmeta.org's API.
+# URLMeta API
+This repo has the script which runs on [urlmeta.org](https://urlmeta.org)'s API.
+
+`app.js` is the sole file responsible for API.
 
 
-## in mean time
+## Todo:
 
-You can:
+ - [ ] Add unit testing and CI
+ - [ ] Optimize the code
 
+### You can:
+
+- Contribute with your code.
 - Star or Watch this repo to be notified of updates
-- Try & Test API. Let me know of any bugs. Read docs here: https://urlmeta.org/dev-api.html
+- Try & Test API. Let us know of any bugs. Read docs here: https://urlmeta.org/dev-api.html
 - Spread the word
