@@ -203,20 +203,18 @@ function init (req, res) {
 }
 
 if (cluster.isMaster) {
-	var numWorkers = require('os').cpus().length;
+	var numCPUs = require('os').cpus().length;
 
-  console.log('firing up ', numWorkers, ' workers...');
+  console.log('firing up ', numCPUs, ' forks');
 
-  for(var i = 0; i < numWorkers; i++) {
+  for(var i = 0; i < numCPUs; i++) {
     cluster.fork();
   }
 
-  cluster.on('exit', function() {
-    cluster.fork();
-  });
+  cluster.on('exit', cluster.fork);
 } else {
 	var server = http.createServer(init).listen(PORT);
 	server.timeout = timeOut;
 }
 
-console.log('Running on port', PORT);
+console.log('Running ', process.pid ,' on port', PORT);
