@@ -1,7 +1,0 @@
-exports.config = {
-  app_name: ['URLMeta API'],
-  license_key: process.env.NEW_RELIC_LICENSE_KEY,
-  logging: {
-    level: 'info'
-  }
-}

@@ -3,6 +3,7 @@ var
 	cheerio = require('cheerio'),
 	http    = require('http'),
 	uri     = require('url'),
+	cluster = require('cluster'),
 	valid   = require('validator');
 
 var
@@ -175,11 +176,11 @@ function respond (r) {
 
 function startURL (url) {
 	if( valid.isURL(url, { protocols: ['http','https'], require_protocol: true } ) ) {
-		getHead(url);
+		return getHead(url);
 	} else if( url === undefined ) {
-		respond( { error: true, reason: "Parameter URL not found.", code: 1 } );
+		return respond( { error: true, reason: "Parameter URL not found.", code: 1 } );
 	} else {
-		respond( { error: true, reason: "Provided URL '"+ url +"' is not valid", code: 2 } );
+		return respond( { error: true, reason: "Provided URL '"+ url +"' is not valid", code: 2 } );
 	}
 }
 
@@ -201,12 +202,21 @@ function init (req, res) {
 	}
 }
 
-var serv = http.Server();
-serv.timeout = timeOut;
+if (cluster.isMaster) {
+	var numWorkers = require('os').cpus().length;
 
-http.createServer(function (req, res) {
+  console.log('firing up ', numWorkers, ' workers...');
 
-	init( req, res );
+  for(var i = 0; i < numWorkers; i++) {
+    cluster.fork();
+  }
 
-}).listen(PORT);
+  cluster.on('exit', function() {
+    cluster.fork();
+  });
+} else {
+	var server = http.createServer(init).listen(PORT);
+	server.timeout = timeOut;
+}
+
 console.log('Running on port', PORT);
