@@ -14,7 +14,8 @@ var
 	timeOut  = 5000,
 	onlyHead = false,
 
-	PORT     = process.env.PORT || 9615;
+	PORT     			 = process.env.PORT || 9615,
+	GA_TRACKING_ID = process.env.GA_TRACKING_ID;
 
 function fullURL (url, path) {
 	return uri.resolve( url, path );
@@ -22,6 +23,20 @@ function fullURL (url, path) {
 
 function encode_64 (url) {
 	return new Buffer(url).toString('base64');
+}
+
+function trackEvent(category, type) {
+  request.post(
+    'http://www.google-analytics.com/collect', {
+      form: {
+		    v: '1',
+		    tid: GA_TRACKING_ID,
+		    cid: '555',
+		    t: 'event',
+		    ec: category,
+		    ea: type === true ? 'onlyHead' : 'full'
+		  }
+  });
 }
 
 function getBody (url) {
@@ -170,6 +185,7 @@ function respond (r) {
 		sendBack.result.onlyHead = true;
 	}
 
+	trackEvent('URL', onlyHead);
 	response.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
 	response.end( JSON.stringify( sendBack ) );
 }
