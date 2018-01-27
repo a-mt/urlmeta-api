@@ -15,3 +15,7 @@ This repo has the script which runs on [urlmeta.org](https://urlmeta.org)'s API.
 - Star or Watch this repo to be notified of updates
 - Try & Test API. Let us know of any bugs. Read docs here: https://urlmeta.org/dev-api.html
 - Spread the word
+
+---
+
+https://urlmeta-api.herokuapp.com/?url=https://urlmeta.org/
