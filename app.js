@@ -57,32 +57,32 @@ function getBody (url) {
 				return respond({ error: true, reason: 'Could not parse HTML of website.', code: 6  });
 			}
 
+    		var meta = {};
 			if(metas !== null && metas.length > 0) {
 
-				var meta = {};
 				metas.each(function() {
 					if( $( this ).attr('name') == 'urlmeta'  &&  $( this ).attr('content')  == 'no') {
 						respond({ error: true, reason: 'Website does not allow crawling.', code: 3 });
 					} else if( $( this ).attr('property') == 'og:title' ||
 										$( this ).attr('name') == 'twitter:title' ) {
-						meta.title = $( this ).attr('content');
+						resBack.title = $( this ).attr('content');
 					} else if( $( this ).attr('property') == 'og:description' ||
 										 $( this ).attr('name') == 'twitter:description' ||
 										 $( this ).attr('itemprop') == 'description' ||
 										 $( this ).attr('name') == 'description' ) {
-						meta.description = $( this ).attr('content');
+						resBack.description = $( this ).attr('content');
 					} else if( $( this ).attr('property') == 'og:image' ||
 										 $( this ).attr('name') == 'twitter:image' ||
 										 $( this ).attr('itemprop') == 'image' ) {
-						meta.image = fullURL( url, $( this ).attr('content') );
+						resBack.image = fullURL( url, $( this ).attr('content') );
+					} else if($( this ).attr('property')) {
+					    meta[$( this ).attr('property')] = $( this ).attr('content');
+					} else if($( this ).attr('name')) {
+    					meta[$( this ).attr('name')] = $( this ).attr('content');
 					}
 				});
-
-				resBack.title       = meta.title;
-				resBack.image       = meta.image;
-				resBack.description = meta.description;
-
 			}
+			resBack.meta = meta;
 
 			$('link[rel]').each(function() {
 				if( $( this ).attr( 'rel' ) == 'shortcut icon' || $( this ).attr( 'rel' ) == 'icon' ) {
