@@ -14,7 +14,7 @@ var
 	timeOut  = 5000,
 	onlyHead = false,
 
-	PORT     			 = process.env.PORT || 9615,
+	PORT           = process.env.PORT || 9615,
 	GA_TRACKING_ID = process.env.GA_TRACKING_ID;
 
 function fullURL (url, path) {
@@ -26,6 +26,9 @@ function encode_64 (url) {
 }
 
 function trackEvent(category, type) {
+	if(!GA_TRACKING_ID) {
+		return;
+	}
   request.post(
     'http://www.google-analytics.com/collect', {
       form: {
@@ -192,7 +195,11 @@ function respond (r) {
 
 function startURL (url) {
 	if( valid.isURL(url, { protocols: ['http','https'], require_protocol: true } ) ) {
-		return getHead(url);
+		if(onlyHead) {
+			return getHead(url);
+		} else {
+			return getBody(url);
+		}
 	} else if( url === undefined ) {
 		return respond( { error: true, reason: "Parameter URL not found.", code: 1 } );
 	} else {
@@ -232,5 +239,4 @@ if (cluster.isMaster) {
 	var server = http.createServer(init).listen(PORT);
 	server.timeout = timeOut;
 }
-
 console.log('Running', process.pid ,'on port', PORT);
